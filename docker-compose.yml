@@ -1,0 +1,10 @@
+version: '2.2'
+services:
+  tech-study:
+    image: yimeng/tech-study
+    container_name: tech-study
+    volumes:
+      - ./config:/root/tech-node/src/config
+      - ./qrcode:/root/tech-node/src/qrcode
+    stdin_open: true
+    tty: true
