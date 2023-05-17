@@ -298,18 +298,19 @@ const shared: Shared = {
     this.log.fail('获取用户信息失败!');
   },
   async getTaskList() {
-    this.log.loading('正在获取任务列表...');
-    // 获取任务列表
-    this.taskList = await getTaskList();
-    if (this.taskList) {
-      this.log.success('获取任务列表成功!');
-      return;
+    for (let i = 0; i < 5; i++) {
+      this.log.loading('正在获取任务列表...');
+      // 获取任务列表
+      this.taskList = await getTaskList();
+      if (this.taskList) {
+        this.log.success('获取任务列表成功!');
+        return;
+      }
+      this.log.fail('获取任务列表失败!');
+      // 限制请求速率
+      await sleep(STUDY_CONFIG.rateLimit);
     }
-    this.log.fail('获取任务列表失败!');
-    // 限制请求速率
-    await sleep(STUDY_CONFIG.rateLimit);
-    // 获取任务列表
-    await this.getTaskList();
+    this.log.fail('尝试次数过多!');
   },
   async getTotalScore() {
     this.log.loading('正在获取总分...');
